@@ -1,0 +1,88 @@
+{% extends "base.html" %}
+{% block content %}
+
+<!-- Hero Section -->
+<div class="hero-section d-flex align-items-center text-center text-white" 
+     style="min-height:100vh; background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), 
+             url({{ url_for('static', filename='images/hero-bg.jpg') }}) no-repeat center center/cover; 
+             background-attachment: fixed;">
+  <div class="container">
+    <h1 class="display-3 fw-bold">Welcome 
+      {% if user.is_authenticated %} {{ user.username }} {% else %} Guest {% endif %}
+    </h1>
+    <p class="lead mb-4">Shop the latest collections at unbeatable prices</p>
+    <form class="d-flex justify-content-center" action="{{ url_for('products.shop') }}">
+      <input type="text" name="q" class="form-control w-50 me-2" placeholder="Search products...">
+      <button class="btn btn-primary">Search</button>
+    </form>
+    <a href="{{ url_for('products.shop') }}" class="btn btn-lg btn-warning mt-4 shadow">
+      Start Shopping
+    </a>
+  </div>
+</div>
+
+
+<!-- Featured Products -->
+<div class="container my-5">
+  <h2 class="text-center mb-4">Featured Products</h2>
+  <div class="row g-4">
+    {% for product in products %}
+      <div class="col-md-3 col-sm-6">
+        <div class="card shadow-sm h-100 border-0">
+          <img src="{{ url_for('static', filename='uploads/' ~ product.image_filename) }}" 
+               class="card-img-top" alt="{{ product.name }}">
+          <div class="card-body text-center">
+            <h6 class="card-title fw-bold">{{ product.name }}</h6>
+            <p class="text-muted">PKR {{ product.price }}</p>
+            <a href="{{ url_for('products.product_detail', product_id=product.id) }}" 
+               class="btn btn-sm btn-outline-primary">Add to Cart</a>
+          </div>
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+</div>
+
+<!-- Trust / Info Section -->
+<div class="container my-5">
+  <div class="row text-center">
+    <div class="col-md-3 col-6">
+      <div class="p-4 shadow-sm rounded bg-light h-100">
+        <h5 class="fw-bold">Low Cost</h5>
+        <p class="text-muted">Best prices guaranteed.</p>
+      </div>
+    </div>
+    <div class="col-md-3 col-6">
+      <div class="p-4 shadow-sm rounded bg-light h-100">
+        <h5 class="fw-bold">High Quality</h5>
+        <p class="text-muted">Premium materials only.</p>
+      </div>
+    </div>
+    <div class="col-md-3 col-6">
+      <div class="p-4 shadow-sm rounded bg-light h-100">
+        <h5 class="fw-bold">Fast Delivery</h5>
+        <p class="text-muted">Quick nationwide shipping.</p>
+      </div>
+    </div>
+    <div class="col-md-3 col-6">
+      <div class="p-4 shadow-sm rounded bg-light h-100">
+        <h5 class="fw-bold">Secure Payments</h5>
+        <p class="text-muted">SSL & trusted gateways.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Newsletter -->
+<div class="container my-5 text-center">
+  <div class="p-5 rounded bg-primary text-white shadow">
+    <h3 class="fw-bold">Stay Updated!</h3>
+    <p>Subscribe to get exclusive deals and new arrivals.</p>
+    <form class="d-flex justify-content-center">
+      <input type="email" class="form-control w-50 me-2" placeholder="Enter your email">
+      <button class="btn btn-warning">Subscribe</button>
+    </form>
+  </div>
+</div>
+
+{% endblock %}

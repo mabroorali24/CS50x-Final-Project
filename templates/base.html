@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>E-Commerce Store</title>
+  <!-- Bootstrap 5 CDN -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Bootstrap Icons CDN -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+
+<link rel="stylesheet" href="style.css">
+
+  <style>
+    html,
+    body {
+      height: 100%;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .content {
+      flex: 1 0 auto;
+    }
+
+    .footer {
+      flex-shrink: 0;
+      background-color: #212529;
+      color: #fff;
+      padding: 50px 0;
+    }
+
+    .footer a {
+      color: #bbb;
+      text-decoration: none;
+    }
+
+    .footer a:hover {
+      color: #fff;
+    }
+
+    .newsletter-input {
+      max-width: 400px;
+    }
+
+    .navbar-nav .nav-link {
+      font-weight: 500;
+      margin-left: 15px;
+    }
+
+    .full-width {
+      margin: 0 !important;
+      padding: 0 !important;
+      width: 100%;
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Header/Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top shadow-sm">
+    <div class="container">
+      <a class="navbar-brand fw-bold fs-4" href="{{ url_for('home') }}">E-Store</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav mx-auto">
+          <li class="nav-item"><a class="nav-link" href="{{ url_for('home') }}">Home</a></li>
+          <li class="nav-item"><a class="nav-link" href="{{ url_for('products.shop') }}">Shop</a></li>
+          <li class="nav-item"><a class="nav-link" href="#">About Us</a></li>
+          <li class="nav-item"><a class="nav-link" href="#">Contact</a></li>
+        </ul>
+        <ul class="navbar-nav ms-auto">
+          {% if current_user.is_authenticated %}
+          <li class="nav-item">
+            <a class="nav-link" href="#">Hi, {{ current_user.username }}</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{{ url_for('products.add_product') }}">Add Product</a>
+          </li>
+          <!-- Cart Icon -->
+          <li class="nav-item">
+            <a class="nav-link position-relative" href="{{ url_for('products.view_cart') }}">
+              <i class="bi bi-cart-fill"></i> Cart
+              {% set cart_count = session.get('cart') | length if session.get('cart') else 0 %}
+              {% if cart_count > 0 %}
+              <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                {{ cart_count }}
+              </span>
+              {% endif %}
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{{ url_for('auth.logout') }}">Logout</a>
+          </li>
+          {% else %}
+          <li class="nav-item">
+            <a class="nav-link" href="{{ url_for('auth.login') }}">Login</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link btn btn-primary text-white px-3 ms-2" href="{{ url_for('auth.signup') }}">Signup</a>
+          </li>
+          {% endif %}
+        </ul>
+
+      </div>
+    </div>
+  </nav>
+
+  <!-- Flash Messages -->
+  <div class="full-width">
+    {% block content %}{% endblock %}
+  </div>
+
+  <!-- Footer -->
+  <footer class="footer mt-5">
+    <div class="container">
+      <div class="row">
+        <!-- About -->
+        <div class="col-md-3 mb-4">
+          <h5 class="fw-bold">E-Store</h5>
+          <p class="text-muted">Your one-stop shop for the latest trends in fashion and accessories. High quality at
+            affordable prices.</p>
+        </div>
+        <!-- Quick Links -->
+        <div class="col-md-3 mb-4">
+          <h6 class="fw-bold">Quick Links</h6>
+          <ul class="list-unstyled">
+            <li><a href="#">Home</a></li>
+            <li><a href="#">About Us</a></li>
+            <li><a href="#">Contact</a></li>
+            <li><a href="{{ url_for('products.shop') }}">Shop</a></li>
+          </ul>
+        </div>
+        <!-- Customer Care -->
+        <div class="col-md-3 mb-4">
+          <h6 class="fw-bold">Customer Care</h6>
+          <ul class="list-unstyled">
+            <li><a href="#">Help Center</a></li>
+            <li><a href="#">Returns</a></li>
+            <li><a href="#">Shipping Info</a></li>
+            <li><a href="#">FAQs</a></li>
+          </ul>
+        </div>
+        <!-- Newsletter -->
+        <div class="col-md-3 mb-4">
+          <h6 class="fw-bold">Newsletter</h6>
+          <p class="text-muted">Subscribe for updates and special offers.</p>
+          <form class="d-flex">
+            <input type="email" class="form-control newsletter-input me-2" placeholder="Enter your email">
+            <button class="btn btn-primary">Subscribe</button>
+          </form>
+        </div>
+      </div>
+      <hr class="border-light">
+      <div class="text-center">
+        <p class="mb-0">&copy; 2025 E-Store. All Rights Reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>

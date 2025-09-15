@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container my-5">
+    <h2 class="mb-4 text-center">Your Cart</h2>
+    {% if products %}
+    <table class="table table-bordered text-center align-middle">
+        <thead>
+            <tr>
+                <th>Product</th>
+                <th>Price</th>
+                <th>Quantity</th>
+                <th>Subtotal</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in products %}
+            <tr>
+                <td>{{ item.product.name }}</td>
+                <td>PKR {{ item.product.price }}</td>
+                <td>
+                    <div class="d-flex justify-content-center align-items-center">
+                        <!-- Decrease Quantity -->
+                        <a href="{{ url_for('products.update_cart', product_id=item.product.id, action='decrease') }}"
+                            class="btn btn-sm btn-outline-secondary me-1">-</a>
+                        <span>{{ item.quantity }}</span>
+                        <a href="{{ url_for('products.update_cart', product_id=item.product.id, action='increase') }}"
+                            class="btn btn-sm btn-outline-secondary ms-1">+</a>
+                    </div>
+                </td>
+                <td>PKR {{ item.subtotal }}</td>
+                <td>
+                    <a href="{{ url_for('products.remove_from_cart', product_id=item.product.id) }}"
+                        class="btn btn-sm btn-danger">Remove</a>
+                </td>
+            </tr>
+            {% endfor %}
+            <tr>
+                <td colspan="3" class="text-end"><strong>Total:</strong></td>
+                <td colspan="2"><strong>PKR {{ total }}</strong></td>
+            </tr>
+        </tbody>
+    </table>
+    <a href="{{ url_for('products.checkout') }}" class="btn btn-success">Proceed to Checkout</a>
+    {% else %}
+    <p class="text-center">Your cart is empty!</p>
+    {% endif %}
+</div>
+{% endblock %}

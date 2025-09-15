@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container my-5">
+  <div class="row g-5">
+    
+    <!-- Product Image -->
+    <div class="col-md-6 d-flex justify-content-center">
+      <div class="border rounded shadow-sm p-3 bg-white" style="max-width: 500px;">
+        <img src="{{ url_for('static', filename='uploads/' ~ product.image_filename) if product.image_filename else 'https://via.placeholder.com/500x500' }}"
+             alt="{{ product.name }}" class="img-fluid rounded">
+      </div>
+    </div>
+
+    <!-- Product Info -->
+    <div class="col-md-6">
+      <h2 class="fw-bold">{{ product.name }}</h2>
+      <p class="text-muted mb-1"><i class="bi bi-tag"></i> Category: <strong>{{ product.category }}</strong></p>
+      <p class="text-muted mb-3"><i class="bi bi-grid"></i> Type: <strong>{{ product.product_type }}</strong></p>
+
+      <h3 class="text-success fw-bold mb-4">${{ product.price }}</h3>
+      <p class="lead">{{ product.description }}</p>
+
+      {% if product.color %}
+      <p><strong>Color:</strong> <span class="badge bg-dark">{{ product.color }}</span></p>
+      {% endif %}
+
+      <p>
+        <strong>Stock:</strong> 
+        {% if product.stock|int > 0 %}
+          <span class="badge bg-success">Available ({{ product.stock }})</span>
+        {% else %}
+          <span class="badge bg-danger">Out of Stock</span>
+        {% endif %}
+      </p>
+
+      <!-- Sizes Section -->
+      {% if product.sizes %}
+      <div class="my-4">
+        <strong>Select Size:</strong>
+        <div class="d-flex flex-wrap gap-2 mt-2">
+          {% for size in product.sizes.split(',') %}
+          <button class="btn btn-outline-secondary px-3 py-2 size-btn">{{ size.strip() }}</button>
+          {% endfor %}
+        </div>
+      </div>
+      {% endif %}
+
+      <!-- Add to Cart Button -->
+      <a href="{{ url_for('products.add_to_cart', product_id=product.id) }}" 
+         class="btn btn-primary btn-lg px-4 mt-3">
+         <i class="bi bi-cart-plus"></i> Add to Cart
+      </a>
+    </div>
+  </div>
+</div>
+
+<!-- Small script for active size button -->
+<script>
+  document.querySelectorAll('.size-btn').forEach(btn => {
+    btn.addEventListener('click', function() {
+      document.querySelectorAll('.size-btn').forEach(b => b.classList.remove('active'));
+      this.classList.add('active');
+    });
+  });
+</script>
+
+<style>
+  .size-btn.active {
+    background-color: #0d6efd;
+    color: white;
+    border-color: #0d6efd;
+  }
+</style>
+{% endblock %}
