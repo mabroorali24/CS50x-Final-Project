@@ -70,17 +70,19 @@
         <ul class="navbar-nav mx-auto">
           <li class="nav-item"><a class="nav-link" href="{{ url_for('home') }}">Home</a></li>
           <li class="nav-item"><a class="nav-link" href="{{ url_for('products.shop') }}">Shop</a></li>
-          <li class="nav-item"><a class="nav-link" href="#">About Us</a></li>
-          <li class="nav-item"><a class="nav-link" href="#">Contact</a></li>
+          <li class="nav-item"><a class="nav-link" href="{{ url_for('about') }}">About Us</a></li>
+          <li class="nav-item"><a class="nav-link" href="{{ url_for('contact') }}">Contact</a></li>
         </ul>
         <ul class="navbar-nav ms-auto">
           {% if current_user.is_authenticated %}
           <li class="nav-item">
             <a class="nav-link" href="#">Hi, {{ current_user.username }}</a>
           </li>
+          {% if current_user.is_admin %}
           <li class="nav-item">
             <a class="nav-link" href="{{ url_for('products.add_product') }}">Add Product</a>
           </li>
+          {% endif %}
           <!-- Cart Icon -->
           <li class="nav-item">
             <a class="nav-link position-relative" href="{{ url_for('products.view_cart') }}">
@@ -129,9 +131,9 @@
         <div class="col-md-3 mb-4">
           <h6 class="fw-bold">Quick Links</h6>
           <ul class="list-unstyled">
-            <li><a href="#">Home</a></li>
-            <li><a href="#">About Us</a></li>
-            <li><a href="#">Contact</a></li>
+            <li><a href="{{ url_for('home') }}">Home</a></li>
+            <li><a href="{{ url_for('about') }}">About Us</a></li>
+            <li><a href="{{ url_for('contact') }}">Contact</a></li>
             <li><a href="{{ url_for('products.shop') }}">Shop</a></li>
           </ul>
         </div>

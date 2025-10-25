@@ -1,26 +1,31 @@
 {% extends "base.html" %}
 {% block content %}
 
+<style>
+  /* Hero Section Styles */
+  .hero-section {
+    min-height: 100vh;
+    background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), 
+                url("{{ url_for('static', filename='images/hero-bg.jpg') }}");
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-size: cover;
+    background-attachment: fixed;
+  }
+</style>
+
 <!-- Hero Section -->
-<div class="hero-section d-flex align-items-center text-center text-white" 
-     style="min-height:100vh; background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), 
-             url({{ url_for('static', filename='images/hero-bg.jpg') }}) no-repeat center center/cover; 
-             background-attachment: fixed;">
+<div class="hero-section d-flex align-items-center text-center text-white">
   <div class="container">
     <h1 class="display-3 fw-bold">Welcome 
       {% if user.is_authenticated %} {{ user.username }} {% else %} Guest {% endif %}
     </h1>
     <p class="lead mb-4">Shop the latest collections at unbeatable prices</p>
-    <form class="d-flex justify-content-center" action="{{ url_for('products.shop') }}">
-      <input type="text" name="q" class="form-control w-50 me-2" placeholder="Search products...">
-      <button class="btn btn-primary">Search</button>
-    </form>
     <a href="{{ url_for('products.shop') }}" class="btn btn-lg btn-warning mt-4 shadow">
       Start Shopping
     </a>
   </div>
 </div>
-
 
 <!-- Featured Products -->
 <div class="container my-5">
